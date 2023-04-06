@@ -22,24 +22,25 @@ abstract class WordRoomDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    var wordDao = database.wordDao()
-
-                    // Delete all content here.
-//                    wordDao.deleteAll()
-
-                    // Add sample words.
-                    var word = Word("Hello")
-                    wordDao.insert(word)
-                    word = Word("World!")
-                    wordDao.insert(word)
-
-                    // TODO: Add your own words!
-                    word = Word("TODO!")
-                    wordDao.insert(word)
+                    populateDatabase(database.wordDao())
                 }
             }
         }
+
+        suspend fun populateDatabase(wordDao: WordDao) {
+            // Delete all content here.
+            wordDao.deleteAll()
+
+            // Add sample words.
+            var word = Word("Hello")
+            wordDao.insert(word)
+            word = Word("World!")
+            wordDao.insert(word)
+
+            // TODO: Add your own words!
+        }
     }
+
 
     companion object {
         @Volatile
